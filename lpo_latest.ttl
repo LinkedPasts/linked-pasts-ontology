@@ -1,0 +1,132 @@
+﻿ ## LPO version 1.1. Richard Light, started 13 March 2020
+
+@prefix lpo: <http://linkedpasts.org/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix lawd: <http://lawd.info/ontology/> .
+@prefix crm: <http://erlangen-crm.org/current/> .
+@prefix geojson: <https://purl.org/geojson/vocab#> .
+@prefix geojson-t: <https://github.com/kgeographer/geojson-t#> .
+
+# # Top-level feature structure:
+
+lpo:hasFeature a rdfs:objectProperty ;
+	rdfs:domain geojson:FeatureCollection ;
+	rdfs:range geojson:Feature 
+	rdfs:comment "Enumerates the Features which make up a FeatureCollection" .
+
+# # Settings:
+
+lpo:Setting a rdfs:Class ;
+  rdfs:comment  "Describes the spatial and/or temporal scope of some Thing, e.g. a named place, a historical period, or an event" .
+
+lpo:setting a rdfs:objectProperty ;
+	rdfs:domain geojson:GeometryCollection ;
+	rdfs:range geojson:Point ;
+	rdfs:comment "The setting of a GeometryCollection" .
+
+## TemporalScope
+
+lpo:PeriodDefinition a rdfs:Class ;
+  rdfs:isDefinedBy "https://test.perio.do/d.json" ;
+  rdfs:comment  "" .
+
+lpo:Timespan  a rdfs:Class ;
+  rdfs:subClassOf time:ProperInterval .
+
+## SpatialScope
+
+## Time-related properties
+
+lpo:when  a owl:FunctionalProperty ;
+  rdfs:range lpo:Timespan ;
+  rdfs:comment  "Relates an instance of an entity or property class with a temporal expression for a period of time it existed or was valid. For example, the existence of a place, its association with a particular name, its spatial location/extent, or its relation with another place. That TemporalScope could be metric (a time:DateTimeExpression) or a web resource defining a named historical period (e.g. a PeriodO PeriodDefinition)" .
+
+lpo:timespan a owl:ObjectProperty ;
+  rdfs:range lpo:Timespan .
+
+lpo:has_start  a owl:ObjectProperty ;
+  rdfs:subPropertyOf  time:intervalStartedBy ;
+  rdfs:domain lpo:Timespan ;
+  rdfs:range  time:ProperInterval ;
+  rdfs:comment "" .
+
+lpo:has_end  a owl:ObjectProperty ;
+  rdfs:subPropertyOf  time:intervalFinishedBy ;
+  rdfs:domain lpo:Timespan ;
+  rdfs:range  time:ProperInterval ;
+  rdfs:comment "" .
+
+lpo:earliest a owl:ObjectProperty ;
+  rdfs:range  time:DateTimeDescription ;
+  rdfs:comment "The earliest possible date for an interval bounding the start or end of an lpo:Timespan" .
+
+lpo:latest a owl:ObjectProperty ;
+  rdfs:range  time:DateTimeDescription ;
+  rdfs:comment "The latest possible date for an interval bounding the start or end of an lpo:Timespan" .
+
+lpo:in a owl:ObjectProperty 
+  rdfs:range  time:DateTimeDescription ;
+  rdfs:comment "need to clarify what is 'in' what!" .
+
+lpo:period a owl:ObjectProperty ;
+  rdfs:range lpo:PeriodDefinition .
+
+## Properties of a Place and relationships between Places
+
+lpo:NameAttestation a rdfs:Class ;
+  rdfs:subClassOf  lawd:Attestation .
+
+lpo:TypeAttestation a rdfs:Class ;
+  rdfs:subClassOf  lawd:Attestation .
+
+lpo:RelAttestation a rdfs:Class ;
+  rdfs:subClassOf  lawd:Attestation .
+
+lpo:LinkAttestation a rdfs:Class ;
+  rdfs:subClassOf  lawd:Attestation .
+
+lpo:name_attestation a owl:ObjectProperty ;
+  rdfs:range lpo:NameAttestation .
+
+lpo:type_attestation a owl:ObjectProperty ;
+  rdfs:range lpo:TypeAttestation .
+
+lpo:rel_attestation a owl:ObjectProperty ;
+  rdfs:range lpo:RelAttestation .
+
+lpo:link_attestation a owl:ObjectProperty ;
+  rdfs:range lpo:LinkAttestation .
+
+lpo:toponym a owl:DatatypeProperty ;
+  rdfs:domain lpo:NameAttestation ;
+  rdfs:range xsd:string .
+
+lpo:source_label a owl:ObjectProperty ;
+  rdfs:domain lawd:Attestation ;
+  rdfs:range xsd:string .
+
+lpo:relation_type a owl:ObjectProperty ;
+  rdfs:comment "In the example, relation_type has what should be a rdf:resource value - a GVP relationship type" .
+
+lpo:relation_to a owl:ObjectProperty ;
+  rdfs:comment "In the example, relation_to has what should be a rdf:resource value - a gazetteer URL" .
+
+lpo:has_certainty a owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:comment "Certainty statements can qualify any assertion, measurement or attestation. Preferred values 'certain' and 'uncertain'" .
+
+# # geoJSON-specific declaration(s)
+
+geojson-t:geometry  a rdf:Property ;
+  rdfs:subPropertyOf  geojson:geometry ;
+  rdfs:isDefinedBy "http://purl.org/geojson/vocab#" ;
+  rdfs:domain geojson:Feature ;
+  rdfs:range  lpo:Setting ;
+  rdfs:comment  "The object of a geojson:geometry relation is not formally defined; in GeoJSON-T it is an lpo:Setting (adds a scoping 'when' relation)." .
