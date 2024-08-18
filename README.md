@@ -4,6 +4,8 @@ A collective workspace for developing the Linked Pasts Ontology, comprising form
 
 
 ### Change log
+#### v2.0 draft (lpo\_draft_9aug.ttl)
+- proposed, 9 August 2024 (K. Grossner @kgeographer)
 
 #### v1.1 (lpo_latest.ttl)
 

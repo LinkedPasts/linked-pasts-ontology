@@ -1,0 +1,245 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lpo: <https://example.org/lpo#> .
+
+# Define the classes
+lpo:Place a owl:Class .
+lpo:PlaceName a owl:Class .
+lpo:PlaceType a owl:Class .
+lpo:PlaceGeom a owl:Class .
+lpo:PlaceRelated a owl:Class .
+lpo:PlaceDescription a owl:Class .
+lpo:Period a owl:Class .
+lpo:SourceLabel a owl:Class ;
+  rdfs:comment "A label associated with a published vocabulary term, with an optional language." .
+
+lpo:When a owl:Class .
+lpo:Citation a owl:Class .
+
+# Properties for Place
+lpo:hasName a owl:ObjectProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range lpo:PlaceName .
+
+lpo:hasType a owl:ObjectProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range lpo:PlaceType .
+
+lpo:hasGeom a owl:ObjectProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range lpo:PlaceGeom .
+
+lpo:hasRelation a owl:ObjectProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range lpo:PlaceRelated .
+
+lpo:hasDescription a owl:ObjectProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range lpo:PlaceDescription .
+
+lpo:sourceId a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:string .
+
+lpo:sourceDataset a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:string .
+
+lpo:sourceDatasetURI a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "URI for a place's dataset source." .
+
+lpo:hasTitle a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:string ;
+    rdfs:comment "a preferred toponym as title of the Place record".
+
+lpo:hasCountryCode a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stores a 2-letter modern country code." .
+
+lpo:hasFeatureClass a owl:DatatypeProperty ;
+    rdfs:domain lpo:Place ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stores one or more feature class codes as strings." .
+
+
+#
+# Properties for PlaceName
+#
+lpo:toponym a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceName ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The toponym or name of the place." .
+
+lpo:language a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceName ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The language of the place name." .
+
+
+#
+# Properties for PlaceType
+#
+lpo:identifier a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceType ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "The URI identifier pointing to a term in a published vocabulary." .
+
+lpo:typeLabel a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceType ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The label of the type, as defined by the published vocabulary." .
+
+lpo:hasSourceLabel a owl:ObjectProperty ;
+    rdfs:domain lpo:PlaceType ;
+    rdfs:range lpo:SourceLabel ;
+    rdfs:comment "Associates a PlaceType with one or more SourceLabel instances." .
+
+
+#
+# Properties for PlaceGeom
+#
+lpo:wktValue a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceGeom ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The Well-Known Text (WKT) representation of the geometry." .
+
+lpo:s2CellId a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceGeom ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A string representation an S2 cell IDs for spatial indexing." .
+
+lpo:reprPoint a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceGeom ;
+    rdfs:range xsd:string ;
+    rdfs:comment "a [longitude/latitude] list" .
+
+
+#
+# Properties for PlaceRelated
+#
+lpo:relationType a owl:ObjectProperty ;
+    rdfs:domain lpo:PlaceRelation ;
+    rdfs:range rdfs:Resource ; 
+    rdfs:comment "A URI pointing to a term in a published vocabulary" .
+
+lpo:relationTo a owl:ObjectProperty ;
+    rdfs:domain lpo:PlaceRelation ;
+    rdfs:range rdfs:Resource ; 
+    rdfs:comment "A URI pointing to another place, either within the same graph or external" .
+
+
+#
+# Properties for PlaceDescription
+#
+lpo:descriptionValue a owl:DatatypeProperty ;
+    rdfs:domain lpo:PlaceDescription ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The textual content of the place description." .
+
+
+#
+# Properties for When
+#
+lpo:sourceYear a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:gYear ;
+    rdfs:comment "Specifies publication year of source." .
+
+lpo:duration a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies the duration of the event, potentially using EDTF syntax." .
+
+# Timespan properties
+lpo:start a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The start date of the timespan, formatted as yyyy-mm or yyyy-mm-dd." .
+
+lpo:end a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The end date of the timespan, formatted as yyyy-mm-dd." .
+
+lpo:earliest a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The earliest possible date for the timespan, formatted as yyyy-mm-dd." .
+
+lpo:latest a owl:DatatypeProperty ;
+    rdfs:domain lpo:When ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The latest possible date for the timespan, formatted as yyyy-mm-dd." .
+
+
+#
+# Properties for Period
+#
+lpo:periodName a owl:DatatypeProperty ;
+    rdfs:domain lpo:Period ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The name of the historical period." .
+
+lpo:periodURI a owl:DatatypeProperty ;
+    rdfs:domain lpo:Period ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "The URI representing the period in a published vocabulary." .
+
+
+#
+# Properties for SourceLabel
+#
+lpo:labelValue a owl:DatatypeProperty ;
+    rdfs:domain lpo:SourceLabel ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The label value of the source term." .
+
+lpo:labelLanguage a owl:DatatypeProperty ;
+    rdfs:domain lpo:SourceLabel ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The language of the label value." .
+
+#
+# Properties for Citation
+#
+lpo:citationURI a owl:DatatypeProperty ;
+    rdfs:domain lpo:Citation ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "The URI to a published resource." .
+
+lpo:sourceYear a owl:DatatypeProperty ;
+    rdfs:domain lpo:Citation ;
+    rdfs:range xsd:gYear ;
+    rdfs:comment "The year associated with the citation or source." .
+
+
+#
+# generic properties
+#
+lpo:hasCitation a owl:ObjectProperty ;
+    rdfs:range lpo:Citation ;
+    rdfs:label "hasCitation" ;
+    rdfs:comment "Connects an entity (e.g., PlaceName, PlaceType, PlaceRelation) to a Citation instance." .
+
+lpo:hasWhen a owl:ObjectProperty ;
+    rdfs:range lpo:When ;
+    rdfs:label "hasWhen" ;
+    rdfs:comment "Connects an entity (e.g., Place, PlaceName, PlaceType, PlaceGeom, PlaceRelation) to a When instance." .
+
+lpo:language a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies the language of the content. Applicable to multiple classes such as PlaceName, PlaceDescription, and SourceLabel." .
+
+lpo:certainty a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A string indicating the level of certainty for a geometry or relation." .
+
+lpo:label a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A human-readable label applicable to multiple entity classes." .
